@@ -9,6 +9,15 @@ public class SMSMtRequest {
     private String password;
     private List<String> destinationAddresses;
     private String sourceAddress;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getVersion() {
         return version;

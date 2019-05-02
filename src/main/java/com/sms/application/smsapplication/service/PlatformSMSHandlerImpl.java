@@ -21,6 +21,7 @@ public class PlatformSMSHandlerImpl implements PlatformSMSHandler{
     public SMSMoResponse handleReceivedSMS(SMSMoRequest smsMoRequest) {
         String message = smsMoRequest.getMessage();
         messageDao.createMessageRequest(message);
+
         return smsMoReceiver.processReceivedMsg(smsMoRequest);
     }
 }

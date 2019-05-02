@@ -37,9 +37,16 @@ public class PlatformSMSHandlerImpl implements PlatformSMSHandler{
             SMSMtRequest smsMtRequest = new SMSMtRequest();
             smsMtRequest.setDestinationAddresses(Collections.singletonList(destinationAddress));
             Optional <UserDetails> userDetails = messageDao.findUserMessageByid(Integer.parseInt(message));
-            UserDetails userDetails1 =userDetails.get();
-            smsMtRequest.setMessage(userDetails1.getMessage());
-            smsMtHandler.sendSMS(smsMtRequest);
+
+            if(userDetails.isPresent()){
+                UserDetails userDetails1 =userDetails.get();
+                smsMtRequest.setMessage(userDetails1.getMessage());
+                smsMtHandler.sendSMS(smsMtRequest);
+            }
+            else{
+                smsMtRequest.setMessage("can not find id");
+                smsMtHandler.sendSMS(smsMtRequest);
+            }
         }catch (Exception e){
             LOGGER.error("Fail to send the sms");
             return new SMSMoResponse("E1000", "Error");

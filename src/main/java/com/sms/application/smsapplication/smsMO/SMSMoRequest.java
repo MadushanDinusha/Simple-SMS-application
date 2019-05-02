@@ -7,7 +7,10 @@ public class SMSMoRequest {
     private String sourceAddress;
     private String message;
     private String requestId;
-    private String encoding;
+    private String messageEncoding;
+
+    public SMSMoRequest() {
+    }
 
     public String getVersion() {
         return version;
@@ -49,12 +52,12 @@ public class SMSMoRequest {
         this.requestId = requestId;
     }
 
-    public String getEncoding() {
-        return encoding;
+    public String messageEncoding() {
+        return messageEncoding;
     }
 
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
+    public void messageEncoding(String encoding) {
+        this.messageEncoding = encoding;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class SMSMoRequest {
                 ", sourceAddress='" + sourceAddress + '\'' +
                 ", message='" + message + '\'' +
                 ", requestId='" + requestId + '\'' +
-                ", encoding='" + encoding + '\'' +
+                ", encoding='" + messageEncoding + '\'' +
                 '}';
     }
 }

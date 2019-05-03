@@ -9,3 +9,13 @@ This application is made for sending and receiving SMS using Ideamart simulator.
 ## Required Configurations
 * Database script is in data file, configure database before executing the application.
 * Add following DNS to `/etc/hosts` file.
+
+## How to Build and Deploy
+* Build the project from top-level.
+````
+    mvn clean install
+```` 
+* Go inside `target/Simple_SMS_Application` and execute the application using following command
+````
+    ./bin/Simple_SMS_Application console
+````

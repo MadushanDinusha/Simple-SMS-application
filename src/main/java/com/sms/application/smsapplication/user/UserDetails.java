@@ -1,6 +1,7 @@
 package com.sms.application.smsapplication.user;
 
 public class UserDetails {
+
     int id;
     String message;
 

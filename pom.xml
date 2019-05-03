@@ -18,7 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jsw.assemble.dir>target/generated-resources/appassembler/jsw</jsw.assemble.dir>
-        <wrapper.location>${project.build.directory}/generated-resources/appassembler/jsw/Simple_SMS_Application</wrapper.location>
+        <wrapper.location>${project.build.directory}/generated-resources/appassembler/jsw/Simple_SMS_Application
+        </wrapper.location>
         <resource.file.location>.</resource.file.location>
         <java.version>1.8</java.version>
     </properties>
@@ -173,23 +174,23 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <mkdir dir="target/Simple_SMS_Application/logs" />
+                                <mkdir dir="target/Simple_SMS_Application/logs"/>
                                 <copy todir="target/Simple_SMS_Application/bin" overwrite="true">
-                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/bin" />
+                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/bin"/>
                                 </copy>
                                 <copy todir="target/Simple_SMS_Application/lib" overwrite="true">
-                                    <fileset dir="${jsw.assemble.dir}/lib" />
+                                    <fileset dir="${jsw.assemble.dir}/lib"/>
                                 </copy>
                                 <copy todir="target/Simple_SMS_Application/lib" overwrite="true">
-                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/lib" />
+                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/lib"/>
                                 </copy>
                                 <copy todir="target/Simple_SMS_Application/conf" overwrite="true">
-                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/conf" />
+                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/conf"/>
                                 </copy>
                                 <copy todir="target/Simple_SMS_Application/conf" overwrite="true">
-                                    <fileset dir="src/main/resources" />
+                                    <fileset dir="src/main/resources"/>
                                 </copy>
-                                <chmod dir="target/Simple_SMS_Application/bin" perm="777" includes="**/**" />
+                                <chmod dir="target/Simple_SMS_Application/bin" perm="777" includes="**/**"/>
                             </tasks>
                         </configuration>
                         <goals>

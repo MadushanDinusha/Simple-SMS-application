@@ -100,7 +100,7 @@
                     <assembleDirectory>${jsw.assemble.dir}</assembleDirectory>
                     <daemons>
                         <daemon>
-                            <id>service-status-inquiry</id>
+                            <id>Simple_SMS_Application</id>
                             <mainClass>com.sms.application.smsapplication.SmsapplicationApplication</mainClass>
                             <platforms>
                                 <platform>jsw</platform>

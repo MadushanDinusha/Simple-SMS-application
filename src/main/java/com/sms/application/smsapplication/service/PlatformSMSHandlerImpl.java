@@ -11,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class PlatformSMSHandlerImpl implements PlatformSMSHandler{
+public class PlatformSMSHandlerImpl implements PlatformSMSHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformSMSHandlerImpl.class);
     private MessageDao messageDao;
@@ -22,36 +23,46 @@ public class PlatformSMSHandlerImpl implements PlatformSMSHandler{
     private SMSMtHandler smsMtHandler;
 
     @Autowired
-    public PlatformSMSHandlerImpl(MessageDao messageDao, SMSMoReceiver smsMoReceiver, SMSMtHandler smsMtHandler){
+    public PlatformSMSHandlerImpl(MessageDao messageDao, SMSMoReceiver smsMoReceiver, SMSMtHandler smsMtHandler) {
         this.messageDao = messageDao;
         this.smsMtHandler = smsMtHandler;
-        this.smsMoReceiver= smsMoReceiver;
+        this.smsMoReceiver = smsMoReceiver;
     }
+
     @Override
     public SMSMoResponse handleReceivedSMS(SMSMoRequest smsMoRequest) {
         String message = smsMoRequest.getMessage();
         String destinationAddress = smsMoRequest.getSourceAddress();
         messageDao.createMessageRequest(message);
-        try{
+        try {
             LOGGER.debug("Setting MT Request");
             SMSMtRequest smsMtRequest = new SMSMtRequest();
             smsMtRequest.setDestinationAddresses(Collections.singletonList(destinationAddress));
-            Optional <UserDetails> userDetails = messageDao.findUserMessageByid(Integer.parseInt(message));
+            Optional<UserDetails> userDetails = messageDao.findUserMessageByid(Integer.parseInt(message));
 
-            if(userDetails.isPresent()){
-                UserDetails userDetails1 =userDetails.get();
-                smsMtRequest.setMessage(userDetails1.getMessage());
-                smsMtHandler.sendSMS(smsMtRequest);
+            boolean isValid = isValidMessage(message);
+            if (isValid) {
+
+                if (userDetails.isPresent()) {
+                    UserDetails userDetails1 = userDetails.get();
+                    smsMtRequest.setMessage(userDetails1.getMessage());
+                    smsMtHandler.sendSMS(smsMtRequest);
+                } else {
+                    smsMtRequest.setMessage("can not find id");
+                    smsMtHandler.sendSMS(smsMtRequest);
+                }
+            } else {
+                LOGGER.debug("Received Message is not in a proper format");
             }
-            else{
-                smsMtRequest.setMessage("can not find id");
-                smsMtHandler.sendSMS(smsMtRequest);
-            }
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("Fail to send the sms");
             return new SMSMoResponse("E1000", "Error");
         }
 
         return smsMoReceiver.processReceivedMsg(smsMoRequest);
+    }
+
+    private boolean isValidMessage(String message) {
+        return Objects.nonNull(message) && !message.trim().isEmpty();
     }
 }

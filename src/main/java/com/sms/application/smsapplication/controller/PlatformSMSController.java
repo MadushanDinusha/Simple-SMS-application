@@ -20,8 +20,8 @@ public class PlatformSMSController {
     @Autowired
     PlatformSMSHandler platformSMSHandler;
 
-    @RequestMapping(path = "/receive",method = RequestMethod.POST)
-    public SMSMoResponse receiveSMS(@RequestBody SMSMoRequest smsMoRequest){
+    @RequestMapping(path = "/receive", method = RequestMethod.POST)
+    public SMSMoResponse receiveSMS(@RequestBody SMSMoRequest smsMoRequest) {
         LOGGER.info("SMS received");
         return platformSMSHandler.handleReceivedSMS(smsMoRequest);
     }

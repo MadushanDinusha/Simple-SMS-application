@@ -28,7 +28,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public void createMessageRequest(String message) {
         try {
-            LOGGER.info("Inserting message[{}] to database",message);
+            LOGGER.info("Inserting message[{}] to database", message);
             template.update(INSERT_MESSAGE, new Object[]{message});
         } catch (Exception e) {
             LOGGER.error("Error occurred while inserting");

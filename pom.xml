@@ -15,6 +15,11 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jsw.assemble.dir>target/generated-resources/appassembler/jsw</jsw.assemble.dir>
+        <wrapper.location>${project.build.directory}/generated-resources/appassembler/jsw/Simple_SMS_Application</wrapper.location>
+        <resource.file.location>.</resource.file.location>
         <java.version>1.8</java.version>
     </properties>
 
@@ -43,8 +48,155 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.yml</exclude>
+                        <exclude>**/*.txt</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/conf</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <repoPath>lib</repoPath>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <assembleDirectory>${jsw.assemble.dir}</assembleDirectory>
+                    <daemons>
+                        <daemon>
+                            <id>service-status-inquiry</id>
+                            <mainClass>com.sms.application.smsapplication.SmsapplicationApplication</mainClass>
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+
+                            <jvmSettings>
+                                <extraArguments>
+                                    <extraArgument>-Xms256m</extraArgument>
+                                    <extraArgument>-Xmx256m</extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
+
+
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+                                    <configuration>
+                                        <property>
+                                            <name>wrapper.java.mainclass</name>
+                                            <value>com.sms.application.smsapplication.SmsapplicationApplication</value>
+                                        </property>
+                                        <property>
+                                            <name>configuration.directory.in.classpath.first</name>
+                                            <value>conf</value>
+                                        </property>
+                                        <property>
+                                            <name>set.default.REPO_DIR</name>
+                                            <value>lib</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>logs/wrapper.log</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.startup.timeout</name>
+                                            <value>0</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.ping.timeout</name>
+                                            <value>60</value>
+                                        </property>
+                                    </configuration>
+                                    <includes>
+                                        <include>linux-x86-64</include>
+                                    </includes>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                        </daemon>
+                    </daemons>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-daemons</goal>
+                            <goal>create-repository</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>make-log-dir</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="target/Simple_SMS_Application/logs" />
+                                <copy todir="target/Simple_SMS_Application/bin" overwrite="true">
+                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/bin" />
+                                </copy>
+                                <copy todir="target/Simple_SMS_Application/lib" overwrite="true">
+                                    <fileset dir="${jsw.assemble.dir}/lib" />
+                                </copy>
+                                <copy todir="target/Simple_SMS_Application/lib" overwrite="true">
+                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/lib" />
+                                </copy>
+                                <copy todir="target/Simple_SMS_Application/conf" overwrite="true">
+                                    <fileset dir="${jsw.assemble.dir}/Simple_SMS_Application/conf" />
+                                </copy>
+                                <copy todir="target/Simple_SMS_Application/conf" overwrite="true">
+                                    <fileset dir="src/main/resources" />
+                                </copy>
+                                <chmod dir="target/Simple_SMS_Application/bin" perm="777" includes="**/**" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

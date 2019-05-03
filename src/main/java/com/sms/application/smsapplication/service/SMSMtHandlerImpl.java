@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class SMSMtHandlerImpl implements SMSMtHandler{
+public class SMSMtHandlerImpl implements SMSMtHandler {
 
     private final RestTemplate restTemplate;
     private static final Logger LOGGER = LoggerFactory.getLogger(SMSMtHandlerImpl.class);
@@ -32,7 +32,7 @@ public class SMSMtHandlerImpl implements SMSMtHandler{
         LOGGER.debug("Send the sms to platform");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<SMSMtRequest> requestHttpEntity = new HttpEntity<>(SMSMtRequest,headers);
+        HttpEntity<SMSMtRequest> requestHttpEntity = new HttpEntity<>(SMSMtRequest, headers);
         ResponseEntity<SMSMtResponse> smsMtConfirmation = restTemplate
                 .postForEntity(platformSmsMtEndpoint, requestHttpEntity, SMSMtResponse.class);
 

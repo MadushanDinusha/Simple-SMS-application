@@ -94,10 +94,10 @@
     </appender>
 
     <logger name="org.hibernate" level="ERROR" additivity="true">
-        <appender-ref ref="framework-logs-appender"/>
+        <appender-ref ref="debug-appender"/>
     </logger>
 
-    <logger name="org.springframework" level="DEBUG" additivity="true">
+    <logger name="org.springframework" level="ERROR" additivity="true">
         <appender-ref ref="framework-logs-appender"/>
     </logger>
 
@@ -120,6 +120,9 @@
     </logger>
 
     <root level="ERROR">
+        <appender-ref ref="debug-appender"/>
+        <appender-ref ref="info-appender"/>
+        <appender-ref ref="error-appender"/>
         <appender-ref ref="framework-logs-appender"/>
     </root>
 </configuration>
